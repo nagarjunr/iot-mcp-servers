@@ -1,5 +1,7 @@
 # Eclipse Ditto MCP Server
 
+<!-- mcp-name: io.github.nagarjunr/eclipse-ditto -->
+
 A [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server for [Eclipse Ditto](https://eclipse.dev/ditto/) — the open-source (EPL-2.0) digital twin framework. It exposes Ditto's HTTP API as MCP tools so an AI agent can manage devices ("things"), their attributes/features, policies, connections, and cluster admin — the full Ditto HTTP API surface.
 
 Since [Bosch IoT Things](https://www.bosch-iot-suite.com/things/) and other commercial IoT platforms are built on Ditto's open protocol, this server also works against those deployments — nothing in the code is vendor-specific.

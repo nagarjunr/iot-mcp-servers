@@ -1127,9 +1127,13 @@ def poll_thing_changes(
     return {"events": events, "count": len(events), "stopped_reason": stopped_reason}
 
 
-if __name__ == "__main__":
+def main() -> None:
     transport, host, port = _get_mcp_init_vars()
     if transport == "stdio":
         mcp.run()
     else:
         mcp.run(transport=transport, transport_options={"host": host, "port": port})
+
+
+if __name__ == "__main__":
+    main()
