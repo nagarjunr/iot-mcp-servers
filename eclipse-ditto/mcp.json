@@ -1,0 +1,43 @@
+{
+    "servers": {
+        "eclipse-ditto": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "run",
+                "dittomcpserver.py"
+            ],
+            "cwd": "/path/to/iot-mcp-servers/eclipse-ditto",
+            "env": {
+                "DITTO_BASE_URL": "https://your-ditto-instance.example.com",
+                "DITTO_USERNAME": "your-username",
+                "DITTO_PASSWORD": "your-password",
+                "DITTO_DEVOPS_USERNAME": "devops",
+                "DITTO_DEVOPS_PASSWORD": "your-devops-password"
+            }
+        },
+        "eclipse-ditto-docker": {
+            "command": "docker",
+            "args": [
+                "run",
+                "-i",
+                "--rm",
+                "-e", "DITTO_BASE_URL",
+                "-e", "DITTO_USERNAME",
+                "-e", "DITTO_PASSWORD",
+                "-e", "DITTO_BEARER_TOKEN",
+                "-e", "DITTO_DEVOPS_USERNAME",
+                "-e", "DITTO_DEVOPS_PASSWORD",
+                "eclipse-ditto-mcp-server:latest"
+            ],
+            "env": {
+                "DITTO_BASE_URL": "https://your-ditto-instance.example.com",
+                "DITTO_USERNAME": "your-username",
+                "DITTO_PASSWORD": "your-password",
+                "DITTO_BEARER_TOKEN": "",
+                "DITTO_DEVOPS_USERNAME": "devops",
+                "DITTO_DEVOPS_PASSWORD": "your-devops-password"
+            }
+        }
+    }
+}
