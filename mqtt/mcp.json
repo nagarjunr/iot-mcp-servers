@@ -26,7 +26,7 @@
                 "-e", "MQTT_USERNAME",
                 "-e", "MQTT_PASSWORD",
                 "-e", "MQTT_USE_TLS",
-                "mqtt-mcp-server:latest"
+                "mqtt5-mcp-server:latest"
             ],
             "env": {
                 "MQTT_HOST": "your-broker.example.com",

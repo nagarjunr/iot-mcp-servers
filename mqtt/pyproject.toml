@@ -1,5 +1,5 @@
 [project]
-name = "mqtt-mcp-server"
+name = "mqtt5-mcp-server"
 version = "0.1.0"
 description = "MCP server for MQTT brokers (publish, subscribe, topic discovery)"
 readme = "README.md"
@@ -22,7 +22,7 @@ Homepage = "https://github.com/nagarjunr/iot-mcp-servers/tree/main/mqtt"
 Repository = "https://github.com/nagarjunr/iot-mcp-servers"
 
 [project.scripts]
-mqtt-mcp-server = "mqttmcpserver:main"
+mqtt5-mcp-server = "mqttmcpserver:main"
 
 [dependency-groups]
 dev = [
