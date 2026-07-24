@@ -25,6 +25,7 @@ Each server is a standalone directory under this repo — its own `pyproject.tom
 |--------|----------|--------|
 | [`eclipse-ditto`](eclipse-ditto/) | [Eclipse Ditto](https://eclipse.dev/ditto/) digital twins (open source; also compatible with Bosch IoT Things and other Ditto-based deployments) | ✅ |
 | [`mqtt`](mqtt/) | [MQTT](https://mqtt.org/) 5.0 — the standard IoT pub/sub protocol (any broker: Mosquitto, EMQX, HiveMQ, AWS IoT Core, etc.) | ✅ |
+| [`aws-iot-core`](aws-iot-core/) | [AWS IoT Core](https://aws.amazon.com/iot-core/) — device registry, shadows, jobs, rules, messaging | ✅ |
 
 More planned: Azure IoT Hub.
 
@@ -42,9 +43,9 @@ Each server directory has an `mcp.json` with a ready-to-use client config exampl
 
 ## Design principles
 
-- **Read-only by default, writes explicit.** Tools default to read/list operations. Any write tool is called out explicitly in that server's README. Create/replace tools default to create-only (`overwrite=False`) using conditional HTTP headers rather than check-then-set, so the safe path is race-free, not just the default. Delete tools, where a server needs them, require an explicit `confirm=True` — there is no bulk/cascading delete.
-- **No vendor lock-in.** Connectors target the open protocol/API (e.g. Eclipse Ditto's HTTP API), not a single vendor's proprietary extension of it, so they work against any compatible deployment.
-- **Tested against the real thing.** Each server is verified against a real instance of the target platform (usually via Docker), not just mocks.
+- **Read-only by default, writes explicit.** Tools default to read/list operations. Any write tool is called out explicitly in that server's README. Create/replace tools default to create-only (`overwrite=False`) — race-free via conditional headers where the target API supports them (e.g. Ditto's `If-None-Match`), otherwise a documented describe-then-create check. Delete tools, where a server needs them, require an explicit `confirm=True` — there is no bulk/cascading delete.
+- **No vendor lock-in.** Connectors target the open protocol/API (e.g. Eclipse Ditto's HTTP API, the MQTT wire protocol), not a single vendor's proprietary extension of it, so they work against any compatible deployment. Exception: cloud-provider services like AWS IoT Core are inherently vendor-specific — no lock-in claim applies there, but no cross-vendor abstraction is invented either.
+- **Tested against the real thing, with one documented exception.** Each server is verified against a real instance of the target platform (usually via Docker), not hand-rolled mocks. `aws-iot-core` is the exception — AWS IoT Core has no free local emulator (LocalStack's IoT support requires a paid plan), so it's tested against [moto](https://github.com/getmoto/moto), a mature open-source AWS API emulator that implements real request/response behavior, not naive mocks.
 
 ## License
 

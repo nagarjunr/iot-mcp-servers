@@ -1,0 +1,37 @@
+{
+    "servers": {
+        "aws-iot-core": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "run",
+                "awsiotcoremcpserver.py"
+            ],
+            "cwd": "/path/to/iot-mcp-servers/aws-iot-core",
+            "env": {
+                "AWS_ACCESS_KEY_ID": "your-access-key-id",
+                "AWS_SECRET_ACCESS_KEY": "your-secret-access-key",
+                "AWS_REGION": "us-east-1"
+            }
+        },
+        "aws-iot-core-docker": {
+            "command": "docker",
+            "args": [
+                "run",
+                "-i",
+                "--rm",
+                "-e", "AWS_ACCESS_KEY_ID",
+                "-e", "AWS_SECRET_ACCESS_KEY",
+                "-e", "AWS_SESSION_TOKEN",
+                "-e", "AWS_REGION",
+                "aws-iot-core-mcp-server:latest"
+            ],
+            "env": {
+                "AWS_ACCESS_KEY_ID": "your-access-key-id",
+                "AWS_SECRET_ACCESS_KEY": "your-secret-access-key",
+                "AWS_SESSION_TOKEN": "",
+                "AWS_REGION": "us-east-1"
+            }
+        }
+    }
+}
