@@ -1,0 +1,44 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.nagarjunr/azure-iot-hub",
+  "title": "Azure IoT Hub",
+  "description": "MCP server for Azure IoT Hub: device registry, twins, methods, jobs, messaging.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/nagarjunr/iot-mcp-servers",
+    "source": "github",
+    "subfolder": "azure-iot-hub"
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "azure-iot-hub-mcp-server",
+      "version": "0.1.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AZURE_IOT_HUB_CONNECTION_STRING",
+          "description": "IoT Hub connection string with service/iothubowner rights, e.g. HostName=my-hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=...",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "AZURE_IOT_HUB_AMQP_PORT",
+          "description": "AMQP port for send_c2d_message, default 5671",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "AZURE_IOT_HUB_AMQP_USE_TLS",
+          "description": "true/false, default true",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}
