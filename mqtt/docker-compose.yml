@@ -1,0 +1,11 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: always
+    ports:
+      - "1883:1883"
+      - "8883:8883"
+    volumes:
+      - ./docker/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./docker/passwd:/mosquitto/config/passwd:ro
+      - ./docker/certs:/mosquitto/config/certs:ro

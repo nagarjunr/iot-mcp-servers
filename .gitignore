@@ -25,3 +25,4 @@ venv/
 # Secrets -- never commit
 .env
 .token
+.gstack/

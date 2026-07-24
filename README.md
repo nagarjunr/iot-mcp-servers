@@ -24,8 +24,9 @@ Each server is a standalone directory under this repo — its own `pyproject.tom
 | Server | Platform | Status |
 |--------|----------|--------|
 | [`eclipse-ditto`](eclipse-ditto/) | [Eclipse Ditto](https://eclipse.dev/ditto/) digital twins (open source; also compatible with Bosch IoT Things and other Ditto-based deployments) | ✅ |
+| [`mqtt`](mqtt/) | [MQTT](https://mqtt.org/) 5.0 — the standard IoT pub/sub protocol (any broker: Mosquitto, EMQX, HiveMQ, AWS IoT Core, etc.) | ✅ |
 
-More planned: Azure IoT Hub, MQTT.
+More planned: Azure IoT Hub.
 
 ## Running a server locally
 

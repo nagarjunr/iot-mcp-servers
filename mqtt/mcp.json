@@ -1,0 +1,40 @@
+{
+    "servers": {
+        "mqtt": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "run",
+                "mqttmcpserver.py"
+            ],
+            "cwd": "/path/to/iot-mcp-servers/mqtt",
+            "env": {
+                "MQTT_HOST": "your-broker.example.com",
+                "MQTT_PORT": "1883",
+                "MQTT_USERNAME": "your-username",
+                "MQTT_PASSWORD": "your-password"
+            }
+        },
+        "mqtt-docker": {
+            "command": "docker",
+            "args": [
+                "run",
+                "-i",
+                "--rm",
+                "-e", "MQTT_HOST",
+                "-e", "MQTT_PORT",
+                "-e", "MQTT_USERNAME",
+                "-e", "MQTT_PASSWORD",
+                "-e", "MQTT_USE_TLS",
+                "mqtt-mcp-server:latest"
+            ],
+            "env": {
+                "MQTT_HOST": "your-broker.example.com",
+                "MQTT_PORT": "8883",
+                "MQTT_USERNAME": "your-username",
+                "MQTT_PASSWORD": "your-password",
+                "MQTT_USE_TLS": "true"
+            }
+        }
+    }
+}
