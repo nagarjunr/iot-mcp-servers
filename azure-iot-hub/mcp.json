@@ -1,0 +1,29 @@
+{
+    "servers": {
+        "azure-iot-hub": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "run",
+                "azureiothubmcpserver.py"
+            ],
+            "cwd": "/path/to/iot-mcp-servers/azure-iot-hub",
+            "env": {
+                "AZURE_IOT_HUB_CONNECTION_STRING": "HostName=your-hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=your-key"
+            }
+        },
+        "azure-iot-hub-docker": {
+            "command": "docker",
+            "args": [
+                "run",
+                "-i",
+                "--rm",
+                "-e", "AZURE_IOT_HUB_CONNECTION_STRING",
+                "azure-iot-hub-mcp-server:latest"
+            ],
+            "env": {
+                "AZURE_IOT_HUB_CONNECTION_STRING": "HostName=your-hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=your-key"
+            }
+        }
+    }
+}
