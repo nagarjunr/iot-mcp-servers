@@ -1,0 +1,41 @@
+{
+    "servers": {
+        "sparkplug-b": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "run",
+                "sparkplugbmcpserver.py"
+            ],
+            "cwd": "/path/to/iot-mcp-servers/sparkplug-b",
+            "env": {
+                "SPARKPLUG_MQTT_HOST": "your-broker.example.com",
+                "SPARKPLUG_MQTT_PORT": "1883",
+                "SPARKPLUG_HOST_ID": "my-mcp-host"
+            }
+        },
+        "sparkplug-b-docker": {
+            "command": "docker",
+            "args": [
+                "run",
+                "-i",
+                "--rm",
+                "-e", "SPARKPLUG_MQTT_HOST",
+                "-e", "SPARKPLUG_MQTT_PORT",
+                "-e", "SPARKPLUG_HOST_ID",
+                "-e", "SPARKPLUG_MQTT_USERNAME",
+                "-e", "SPARKPLUG_MQTT_PASSWORD",
+                "-e", "SPARKPLUG_MQTT_USE_TLS",
+                "sparkplug-b-mcp-server:latest"
+            ],
+            "env": {
+                "SPARKPLUG_MQTT_HOST": "your-broker.example.com",
+                "SPARKPLUG_MQTT_PORT": "8883",
+                "SPARKPLUG_HOST_ID": "my-mcp-host",
+                "SPARKPLUG_MQTT_USERNAME": "your-username",
+                "SPARKPLUG_MQTT_PASSWORD": "your-password",
+                "SPARKPLUG_MQTT_USE_TLS": "true"
+            }
+        }
+    }
+}
