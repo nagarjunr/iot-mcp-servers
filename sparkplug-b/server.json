@@ -1,0 +1,68 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.nagarjunr/sparkplug-b",
+  "title": "Sparkplug B",
+  "description": "MCP server for Sparkplug B: node/device discovery, metrics, commands, host state over MQTT.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/nagarjunr/iot-mcp-servers",
+    "source": "github",
+    "subfolder": "sparkplug-b"
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "sparkplug-b-mcp-server",
+      "version": "0.1.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "SPARKPLUG_MQTT_HOST",
+          "description": "MQTT broker hostname or IP.",
+          "isRequired": true,
+          "isSecret": false
+        },
+        {
+          "name": "SPARKPLUG_HOST_ID",
+          "description": "This connector's Sparkplug Host Application ID (used in the spBv1.0/STATE/{id} topic).",
+          "isRequired": true,
+          "isSecret": false
+        },
+        {
+          "name": "SPARKPLUG_MQTT_PORT",
+          "description": "MQTT broker port, default 1883",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "SPARKPLUG_MQTT_USERNAME",
+          "description": "Broker username, if required",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "SPARKPLUG_MQTT_PASSWORD",
+          "description": "Broker password, if required",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "SPARKPLUG_MQTT_USE_TLS",
+          "description": "true/false, default false",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "SPARKPLUG_GROUP_ID",
+          "description": "Restrict discovery/watching to a single Sparkplug Group ID; omit to subscribe to every group",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}
