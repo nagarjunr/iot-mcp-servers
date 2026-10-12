@@ -61,8 +61,7 @@ _MODULE_ID_DESC = "Module ID on the device."
 _CONFIRM_DESC = "Must be explicitly set to True to perform this delete. Safety gate against accidental destructive calls."
 _OVERWRITE_DESC = (
     "If False (default), fails if the resource already exists. Set True to replace/update it. "
-    "Best-effort check (describe-then-create) -- IoT Hub's If-Match ETag header is for optimistic "
-    "concurrency on updates, not create-only semantics."
+    "When False, create-only semantics are enforced atomically by the hub using the If-None-Match: * header."
 )
 _ETAG_DESC = "Optional ETag for optimistic concurrency -- fails if the resource was modified since you last read it."
 
@@ -87,11 +86,13 @@ def _require_confirm(confirm: bool, action: str) -> None:
 
 def _create_or_replace(path: str, body: dict[str, Any], overwrite: bool, context: str) -> httpx.Response:
     if not overwrite:
-        existing = _request("GET", path)
-        if existing.status_code == 200:
+        # Race-free create-only: IoT Hub documents that PUT with "If-None-Match: *" returns 201 when the
+        # resource is absent and 412 Precondition Failed when it already exists.
+        resp = _request("PUT", path, json=body, headers={"If-None-Match": "*"})
+        if resp.status_code == 412:
             raise RuntimeError(f"{context} already exists (pass overwrite=True to replace it).")
-        if existing.status_code != 404:
-            _raise_for_status(existing, f"Failed to check existing {context}")
+        _raise_for_status(resp, f"Failed to create {context}")
+        return resp
     resp = _request("PUT", path, json=body)
     _raise_for_status(resp, f"Failed to create/update {context}")
     return resp
