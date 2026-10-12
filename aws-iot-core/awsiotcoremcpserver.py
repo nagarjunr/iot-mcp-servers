@@ -675,6 +675,17 @@ def create_policy(
 
     Wraps CreatePolicy (new policy) / CreatePolicyVersion (existing policy).
     """
+    if not overwrite:
+        # CreatePolicy is documented to fail with ResourceAlreadyExistsException (HTTP 409) when the name is
+        # taken, so create-only needs no separate existence check and has no check-then-create race.
+        try:
+            resp = client.create_policy(policyName=policy_name, policyDocument=json.dumps(policy_document))
+        except ClientError as e:
+            if e.response.get("Error", {}).get("Code") == "ResourceAlreadyExistsException":
+                raise RuntimeError(f"Policy '{policy_name}' already exists (pass overwrite=True to add a new version).") from e
+            raise RuntimeError(f"Failed to create policy '{policy_name}': {_err(e)}") from e
+        return _strip_response_metadata(resp)
+
     exists = True
     try:
         client.get_policy(policyName=policy_name)
@@ -682,9 +693,6 @@ def create_policy(
         if e.response.get("Error", {}).get("Code") != "ResourceNotFoundException":
             raise RuntimeError(f"Failed to check existing policy '{policy_name}': {_err(e)}") from e
         exists = False
-
-    if exists and not overwrite:
-        raise RuntimeError(f"Policy '{policy_name}' already exists (pass overwrite=True to add a new version).")
 
     try:
         if exists:

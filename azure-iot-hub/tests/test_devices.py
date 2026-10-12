@@ -29,18 +29,20 @@ def test_get_device_sends_sas_auth_header():
 
 @respx.mock
 def test_create_device_refuses_overwrite_by_default():
-    respx.get(f"{BASE}/devices/{DEVICE}").mock(return_value=httpx.Response(200, json={"deviceId": DEVICE}))
+    route = respx.put(f"{BASE}/devices/{DEVICE}").mock(return_value=httpx.Response(412, json={"Message": "precondition"}))
     with pytest.raises(RuntimeError, match="already exists"):
         server.create_device(DEVICE)
+    assert route.calls.last.request.headers["If-None-Match"] == "*"
 
 
 @respx.mock
 def test_create_device_creates_when_absent():
-    respx.get(f"{BASE}/devices/{DEVICE}").mock(return_value=httpx.Response(404, json={"Message": "not found"}))
     put_route = respx.put(f"{BASE}/devices/{DEVICE}").mock(
-        return_value=httpx.Response(200, json={"deviceId": DEVICE, "status": "enabled"})
+        return_value=httpx.Response(201, json={"deviceId": DEVICE, "status": "enabled"})
     )
     result = server.create_device(DEVICE)
+    assert put_route.calls.last.request.headers["If-None-Match"] == "*"
+    assert not respx.get(f"{BASE}/devices/{DEVICE}").called
     assert result["deviceId"] == DEVICE
     sent_body = put_route.calls.last.request.content
     assert b'"deviceId":"pytest-device"' in sent_body or b"pytest-device" in sent_body
