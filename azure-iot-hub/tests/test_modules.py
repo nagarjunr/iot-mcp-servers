@@ -29,8 +29,8 @@ def test_get_module():
 
 @respx.mock
 def test_create_module_refuses_overwrite_by_default():
-    respx.get(f"{BASE}/devices/{DEVICE}/modules/{MODULE}").mock(
-        return_value=httpx.Response(200, json={"moduleId": MODULE})
+    respx.put(f"{BASE}/devices/{DEVICE}/modules/{MODULE}").mock(
+        return_value=httpx.Response(412, json={"Message": "precondition"})
     )
     with pytest.raises(RuntimeError, match="already exists"):
         server.create_module(DEVICE, MODULE)
@@ -38,9 +38,8 @@ def test_create_module_refuses_overwrite_by_default():
 
 @respx.mock
 def test_create_module_creates_when_absent():
-    respx.get(f"{BASE}/devices/{DEVICE}/modules/{MODULE}").mock(return_value=httpx.Response(404, json={}))
     respx.put(f"{BASE}/devices/{DEVICE}/modules/{MODULE}").mock(
-        return_value=httpx.Response(200, json={"deviceId": DEVICE, "moduleId": MODULE})
+        return_value=httpx.Response(201, json={"deviceId": DEVICE, "moduleId": MODULE})
     )
     result = server.create_module(DEVICE, MODULE)
     assert result["moduleId"] == MODULE
